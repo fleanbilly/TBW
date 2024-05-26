@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace TBW
 {
@@ -11,76 +12,156 @@ namespace TBW
         public MainWindow()
         {
             InitializeComponent();
-            InitializeGame();
-        }
-
-        private void InitializeGame()
-        {
             gameSetup = new GameSetup();
             gameSetup.SetupDeck();
-            DisplayNextCard();
             UpdateBoardState();
         }
 
-        private void DisplayNextCard()
+        private void DrawCardButton_Click(object sender, RoutedEventArgs e)
         {
-            Card nextCard = gameSetup.DrawCard();
-            if (nextCard != null)
+            var card = gameSetup.DrawCard();
+            if (card != null)
             {
-                cardTitleTextBlock.Text = nextCard.Title;
-                cardTextTextBlock.Text = nextCard.Text;
+                cardTitleTextBlock.Text = card.Name;
+                cardOptionsTextBox.Text = $"Option 1: {card.Option1}\nOption 2: {card.Option2}";
+
+                if (card.Type == "Capability")
+                {
+                    capabilityTextBlock.Text = $"{card.Name}\nOption 1: {card.Option1}\nOption 2: {card.Option2}";
+                    selectBritishCapabilityButton.IsEnabled = true;
+                    selectIrgunCapabilityButton.IsEnabled = true;
+                }
+                else
+                {
+                    capabilityTextBlock.Text = "No capability selected.";
+                    selectBritishCapabilityButton.IsEnabled = false;
+                    selectIrgunCapabilityButton.IsEnabled = false;
+                }
+                UpdateDeckCounts();
+            }
+        }
+
+
+        private void SelectOption1_Click(object sender, RoutedEventArgs e)
+        {
+            var currentCard = gameSetup.GetDiscardPile().LastOrDefault();
+            if (currentCard != null)
+            {
+                MessageBox.Show($"Option 1 selected for {currentCard.Name}: {currentCard.Option1}");
+                // Perform actions related to Option 1
+            }
+        }
+
+        private void SelectOption2_Click(object sender, RoutedEventArgs e)
+        {
+            var currentCard = gameSetup.GetDiscardPile().LastOrDefault();
+            if (currentCard != null)
+            {
+                MessageBox.Show($"Option 2 selected for {currentCard.Name}: {currentCard.Option2}");
+                // Perform actions related to Option 2
+            }
+        }
+
+
+
+        private void SelectBritishCapabilityButton_Click(object sender, RoutedEventArgs e)
+        {
+            var currentCard = gameSetup.GetDiscardPile().LastOrDefault();
+            if (currentCard != null && currentCard.Type == "Capability")
+            {
+                var capability = new Capability(currentCard.Name, currentCard.Option1, currentCard.Option2);
+                gameSetup.AddBritishCapability(capability);
                 UpdateBoardState();
             }
-            else
+        }
+
+        private void SelectIrgunCapabilityButton_Click(object sender, RoutedEventArgs e)
+        {
+            var currentCard = gameSetup.GetDiscardPile().LastOrDefault();
+            if (currentCard != null && currentCard.Type == "Capability")
             {
-                MessageBox.Show("No more cards in the draw pile.");
+                var capability = new Capability(currentCard.Name, currentCard.Option1, currentCard.Option2);
+                gameSetup.AddIrgunCapability(capability);
+                UpdateBoardState();
+            }
+        }
+
+        private void UpdateDeckCounts()
+        {
+            if (drawDeckTextBlock != null)
+            {
+                drawDeckTextBlock.Text = $"Draw Deck: {gameSetup.GetDrawPile().Count} cards";
+            }
+
+            if (discardDeckTextBlock != null)
+            {
+                discardDeckTextBlock.Text = $"Discard Pile: {gameSetup.GetDiscardPile().Count} cards";
             }
         }
 
         private void UpdateBoardState()
         {
-            // Create a textual representation of the map and unit placement
-            boardTextBox.Text = "Board State and Scoring Information\n";
-            boardTextBox.Text += $"Current Player: {gameSetup.Initiative}\n";
-            boardTextBox.Text += $"Political Will: {gameSetup.PoliticalWill}\n";
-            boardTextBox.Text += $"Haganah Track: {gameSetup.HaganahTrack}\n\n";
-
-            foreach (var area in gameSetup.GetAreas())
+            var britishCapabilities = gameSetup.GetBritishCapabilities();
+            if (britishCapabilities.Any())
             {
-                boardTextBox.Text += $"{area.Name} (Points: {area.PointValue}) - Adjacent: {string.Join(", ", area.AdjacentAreas)}\n";
-                foreach (var unit in area.Units)
-                {
-                    boardTextBox.Text += $"- {unit.Type} Unit, State: {unit.State}\n";
-                }
-                boardTextBox.Text += "\n";
+                var capability = britishCapabilities.Last();
+                britishCapabilityTextBlock.Text = $"{capability.Name}\nOption 1: {capability.Option1}\nOption 2: {capability.Option2}";
+            }
+            else
+            {
+                britishCapabilityTextBlock.Text = "No capability selected.";
             }
 
-            // Update capabilities
-            britishCapabilitiesTextBox.Text = string.Join("\n", gameSetup.GetBritishCapabilities().Select(c => $"{c.Name}: {c.Description}"));
-            irgunCapabilitiesTextBox.Text = string.Join("\n", gameSetup.GetIrgunCapabilities().Select(c => $"{c.Name}: {c.Description}"));
+            var irgunCapabilities = gameSetup.GetIrgunCapabilities();
+            if (irgunCapabilities.Any())
+            {
+                var capability = irgunCapabilities.Last();
+                irgunCapabilityTextBlock.Text = $"{capability.Name}\nOption 1: {capability.Option1}\nOption 2: {capability.Option2}";
+            }
+            else
+            {
+                irgunCapabilityTextBlock.Text = "No capability selected.";
+            }
 
-            // Update game status
-            initiativeTextBlock.Text = $"Initiative: {gameSetup.Initiative}";
-            politicalWillTextBlock.Text = $"Political Will: {gameSetup.PoliticalWill}";
-            haganahTrackTextBlock.Text = $"Haganah Track: {gameSetup.HaganahTrack}";
+            // Update board state
+            boardTextBox.Text = GetBoardStateText();
         }
 
-        private void DrawCardButton_Click(object sender, RoutedEventArgs e)
+        private string GetBoardStateText()
         {
-            DisplayNextCard();
+            var areas = gameSetup.GetAreas();
+            var boardState = "Board State:\n";
+            foreach (var area in areas)
+            {
+                boardState += $"{area.Name} ({area.Type}): {area.PointValue} points\n";
+                foreach (var adjacentArea in area.AdjacentAreas)
+                {
+                    boardState += $"  Adjacent to: {adjacentArea}\n";
+                }
+                foreach (var unit in area.Units)
+                {
+                    boardState += $"  Unit: {unit.Type}, Status: {unit.Status}\n";
+                }
+            }
+            return boardState;
         }
 
-        private void ShowDiscardPileButton_Click(object sender, RoutedEventArgs e)
+        private void InitiativeToggleButton_Checked(object sender, RoutedEventArgs e)
         {
-            var discardPile = gameSetup.GetDiscardPile();
-            string discardPileText = "Discard Pile:\n" + string.Join("\n", discardPile.Select(c => c.Title));
-            MessageBox.Show(discardPileText, $"Discard Pile ({discardPile.Count} cards played)");
+            if (initiativeToggleButton != null && gameSetup != null)
+            {
+                initiativeToggleButton.Content = "Initiative: British";
+                gameSetup.Initiative = "British";
+            }
         }
 
-        private void ShowDrawPileButton_Click(object sender, RoutedEventArgs e)
+        private void InitiativeToggleButton_Unchecked(object sender, RoutedEventArgs e)
         {
-            var drawPile = gameSetup.GetDrawPile();
-            MessageBox.Show($"There are {drawPile.Count} cards left to play.", $"Draw Pile ({drawPile.Count} cards left to play)");
+            if (initiativeToggleButton != null && gameSetup != null)
+            {
+                initiativeToggleButton.Content = "Initiative: Irgun";
+                gameSetup.Initiative = "Irgun";
+            }
         }
     }
 }
