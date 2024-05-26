@@ -8,50 +8,49 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="269*"/>
-            <ColumnDefinition Width="194*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <!-- Deck and Card Interaction -->
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="10,10,10,10">
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="10">
             <Button Content="Draw Card" Click="DrawCardButton_Click" Margin="5"/>
-            <TextBlock Name="drawDeckTextBlock" Text="Draw Deck: 21 cards" Margin="5"/>
-            <TextBlock Name="discardDeckTextBlock" Text="Discard Pile: 0 cards" Margin="5"/>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Name="drawDeckTextBlock" Text="Draw Deck: 21 cards" Margin="5"/>
+                <Button Content="Show Draw Pile" Click="ShowDrawPileButton_Click" Width="120" Margin="5"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <TextBlock Name="discardDeckTextBlock" Text="Discard Pile: 0 cards" Margin="5"/>
+                <Button Content="Show Discard Pile" Click="ShowDiscardPileButton_Click" Width="120" Margin="5"/>
+            </StackPanel>
             <TextBlock Name="cardTitleTextBlock" Text="Card Title" Margin="5"/>
-            <TextBox Name="cardOptionsTextBox" Text="Card Options will be displayed here..." IsReadOnly="True" Margin="5" Height="200" Width="502" TextWrapping="Wrap"/>
-            <Button Content="Select Option 1" Click="SelectOption1_Click" Margin="5"/>
-            <Button Content="Select Option 2" Click="SelectOption2_Click" Margin="5"/>
-        </StackPanel>
-
-        <!-- Capability Interaction -->
-        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,10">
-            <Button Name="selectBritishCapabilityButton" Content="Select British Capability" Click="SelectBritishCapabilityButton_Click" Margin="5" IsEnabled="False"/>
-            <Button Name="selectIrgunCapabilityButton" Content="Select Irgun Capability" Click="SelectIrgunCapabilityButton_Click" Margin="5" IsEnabled="False"/>
-            <TextBlock Name="capabilityTextBlock" Text="No capability selected." Margin="5"/>
+            <TextBlock Name="cardOption1TextBlock" Text="Option 1" Margin="5"/>
+            <TextBlock Name="cardOption2TextBlock" Text="Option 2" Margin="5"/>
+            <TextBlock Name="cardSelectedOptionTextBlock" Text="Selected Option" Margin="5"/>
+            <Button Content="Select Option 1" Click="SelectOption1Button_Click" Margin="5"/>
+            <Button Content="Select Option 2" Click="SelectOption2Button_Click" Margin="5"/>
         </StackPanel>
 
         <!-- Board State Display -->
-        <TextBox Name="boardTextBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" IsReadOnly="True"
-                 Text="Board state will be displayed here..." VerticalScrollBarVisibility="Auto" Margin="10,10,10,10"/>
-
-        <!-- Capability Display -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="10,10,10,10">
-            <TextBlock Name="britishCapabilityTextBlock" Text="No British capability selected." Margin="5"/>
-            <TextBlock Name="irgunCapabilityTextBlock" Text="No Irgun capability selected." Margin="5"/>
-        </StackPanel>
+        <TextBox Name="boardTextBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" IsReadOnly="True"
+                 Text="Board state will be displayed here..." VerticalScrollBarVisibility="Auto" Margin="10"/>
 
         <!-- Initiative Toggle and Trackers -->
-        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Margin="10,10,10,10">
+        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Margin="10">
             <CheckBox Name="initiativeToggleButton" Content="Initiative: Irgun" IsChecked="True"
                       Checked="InitiativeToggleButton_Checked" Unchecked="InitiativeToggleButton_Unchecked"/>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="Political Will: " VerticalAlignment="Center"/>
-                <TextBox Name="politicalWillTextBox" Text="18" Width="30" Margin="5"/>
+                <TextBox Name="politicalWillTextBlock" Text="18" Width="30" Margin="5"/>
+                <Button Content="+" Click="IncreasePoliticalWill_Click" Width="20" Margin="5"/>
+                <Button Content="-" Click="DecreasePoliticalWill_Click" Width="20" Margin="5"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Text="Haganah Track: " VerticalAlignment="Center"/>
-                <TextBox Name="haganahTrackTextBox" Text="4" Width="30" Margin="5"/>
+                <TextBox Name="haganahTrackTextBlock" Text="4" Width="30" Margin="5"/>
+                <Button Content="+" Click="IncreaseHaganahTrack_Click" Width="20" Margin="5"/>
+                <Button Content="-" Click="DecreaseHaganahTrack_Click" Width="20" Margin="5"/>
             </StackPanel>
         </StackPanel>
     </Grid>

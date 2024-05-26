@@ -1,14 +1,15 @@
 ﻿public class Unit
 {
-    public string Type { get; set; } // e.g., "Irgun", "British"
-    public string Status { get; set; } // e.g., "Active", "Hidden"
+    public string Type { get; set; } // Example: "British", "Irgun"
+    public string State { get; set; } // Example: "Hidden", "Active", etc.
 
-    public Unit(string type, string status)
+    public Unit(string type, string state)
     {
         Type = type;
-        Status = status;
+        State = state;
     }
 }
+
 
 
 
