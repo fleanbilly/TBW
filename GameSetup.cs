@@ -2,88 +2,95 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class GameSetup
+namespace TBW
 {
-    private List<Card> eventCards;
-    private List<Card> capabilityCards;  
-    private List<Card> propagandaCards;
-    private Stack<Card> drawPile;
-    private List<Card> discardPile;
-    private List<Capability> britishCapabilities;
-    private List<Capability> irgunCapabilities;
-    private List<Capability> selectedBritishCapabilities;
-    private List<Capability> selectedIrgunCapabilities;
-    private List<Area> areas;
-    public string Initiative { get; set; }
-    public int PoliticalWill { get; set; }
-    public int HaganahTrack { get; set; }
-    public bool FullOperationTaken { get; set; }
-    public bool EventTaken { get; set; }
-    public bool LimitedOperationTaken { get; set; }
-
-    public GameSetup()
+    public class GameSetup
     {
-        // Initialize event cards
-        eventCards = new List<Card>
+        private List<Card> eventCards;
+        private List<Card> capabilityCards;
+        private List<Card> propagandaCards;
+        private Stack<Card> drawPile;
+        private List<Card> discardPile;
+        private List<Capability> britishCapabilities;
+        private List<Capability> irgunCapabilities;
+        private List<Capability> selectedBritishCapabilities;
+        private List<Capability> selectedIrgunCapabilities;
+        private List<Area> areas;
+        private Stack<IntelMarker> intelMarkers;
+        private List<IntelMarker> britishIntelMarkers;
+        public string Initiative { get; set; }
+        public int PoliticalWill { get; set; }
+        public int HaganahTrack { get; set; }
+        public bool FullOperationTaken { get; set; }
+        public bool EventTaken { get; set; }
+        public bool LimitedOperationTaken { get; set; }
+     
+
+        public GameSetup()
         {
-            new Card("Operation Agatha", "Event",
-                "Option 1: British Search in 1 City then Mass Detention there. Shift Haganah Track 1 step to the left.",
-                "Option 2: Shift Haganah Track 1 step to the right. If it is now at 4, Irgun may perform Sabotage in 1 space."),
-            new Card("Exodus Affair", "Event",
-                "Option 1: Crackdown on immigration: Remove all Cells from Coastal Districts with Troops to Prison.",
-                "Option 2: Increase Political Will by 1."),
-            new Card("King David Hotel", "Event",
-                "Option 1: Widespread condemnation: Remove 1 Terror marker from the map to shift Haganah Track 1 step to the left.",
-                "Option 2: Increase Political Will by 1."),
-            new Card("Jewish Agency", "Event",
-                "Option 1: Shift Haganah Track 1 step to the left. If Haganah Track is at 1 or higher, place 1 Cell in Available.",
-                "Option 2: Shift Haganah Track 1 step to the right."),
-            new Card("Dayr Yasin", "Event",
-                "Option 1: Irgun Propagandize in up to 2 spaces. Add +1 for each space.",
-                "Option 2: Irgun may Recruit in up to 3 spaces."),
-            new Card("White Paper", "Event",
-                "Option 1: Remove up to 2 Cells from the map to Available. Shift Haganah Track 1 step to the right.",
-                "Option 2: Increase Political Will by 1."),
-            new Card("Lehi", "Event",
-                "Option 1: Irgun may Recruit in up to 3 spaces.",
-                "Option 2: Irgun may place up to 1 Cell from Available in each space with a Curfew."),
-            new Card("Sabotage Railways", "Event",
-                "Option 1: Place Sabotage markers in up to 2 Railway spaces.",
-                "Option 2: Irgun may place 1 Cell in Available for each Sabotage marker."),
-            new Card("British Diplomacy", "Event",
-                "Option 1: Shift Haganah Track 1 step to the left. If Haganah Track is at 1 or higher, place 1 Cell in Available.",
-                "Option 2: Increase Political Will by 1."),
-            new Card("Irgun Offensive", "Event",
-                "Option 1: Place 1 Arms Cache in any space with an Irgun Cell.",
-                "Option 2: Irgun may perform Sabotage in up to 2 spaces."),
-            // Add capability cards
-            new Card("Menachem Begin", "Capability",
-                "Option 1: Documents captured: Each Arms Cache removed with Assault adds 2 Political Will and draws 2 Intel Chits.",
-                "Option 2: Irgun leader: Propaganda lowers Political Will by 2 per selected space."),
-            new Card("Veterans of WWII", "Capability",
-                "Option 1: Experienced in resistance and combat: Irgun may Sabotage in up to 3 spaces or British may Assault in up to 3 spaces.",
-                "Option 2: Coordinated attack: The Executing Faction may also conduct a valid Special Activity for that Operation."),
-            new Card("Alan Cunningham", "Capability",
-                "Option 1: Restrained approach: British may conduct 2 Limited Operations then Restore. Cells released: British must place 2 Cells from Prison into any Cities.",
-                "Option 2: Harsh measures: Remove 1 Cell to Available from each space with a British piece."),
-            new Card("Curfews", "Capability",
-                "Option 1: Punitive response: At start of Reset, remove 1 Cell to Available from each space with a Curfew.",
-                "Option 2: Harsh measures backfire: At start of Reset, Irgun may place up to 1 Cell from Available in each space with a Curfew."),
-            new Card("Bevingrads", "Capability",
-                "Option 1: Fortified bases: Terror places max 1 Terror marker.",
-                "Option 2: Isolated from population: If Intel Chit not used, Search in Cities requires 4 Cubes to Activate a Cell."),
-            new Card("6th Airborne", "Capability",
-                "Option 1: Seasoned veterans: Assault removes 1 Irgun piece per Troop.",
-                "Option 2: Cells evade capture: Assault and Mass Detention remove all Cells to Available (not Prison)."),
-            new Card("Ernest Bevin", "Capability",
-                "Option 1: Foreign Secretary: Lower the Political Will loss from all starred (*) Events by 1.",
-                "Option 2: Declining great power: British Operations limited to up to 2 rather than 3 spaces."),
-            new Card("Road Mines", "Capability",
-                "Option 1: Armored cars: Patrol may remove Cells in up to 2 selected spaces.",
-                "Option 2: Early IEDs: When Patrol moves Police to any space with a Sabotage marker, remove 1 Police to Available on a roll of 1-3.")
-        };
-        // Initialize capability cards
-        capabilityCards = new List<Card>
+            InitializeIntelMarkers();
+
+            // Initialize event cards
+            eventCards = new List<Card>
+        {
+
+        new Card("Biltmore Program", "Event",
+            "Option 1: British remove 1 Police from the map.",
+            "Option 2: Irgun places 1 Cell in each of any 2 Cities without a Curfew marker."),
+        new Card("Black Saturday", "Event",
+            "Option 1: British remove up to 3 Irgun Cells and/or Arms Caches from any one space.",
+            "Option 2: Irgun places 1 Sabotage marker in a City."),
+        new Card("Blow Up King David Hotel", "Event",
+            "Option 1: British remove up to 2 Police from the map.",
+            "Option 2: Irgun places 1 Sabotage marker in a City."),
+        new Card("Displaced Persons Act", "Event",
+            "Option 1: British remove 1 Police from Available.",
+            "Option 2: Irgun places 1 Cell in any District."),
+        new Card("Einstein Protests", "Event",
+            "Option 1: Irgun removes 1 Cell from any one space.",
+            "Option 2: British place 1 Police in any one space."),
+        new Card("Exodus", "Event",
+            "Option 1: Irgun removes up to 2 Cells from the map.",
+            "Option 2: British lower the Haganah Track by 1."),
+        new Card("Hagana Breaks With Irgun", "Event",
+            "Option 1: Irgun removes 1 Cell from the map.",
+            "Option 2: British raise the Haganah Track by 1."),
+        new Card("Hebron Massacre", "Event",
+            "Option 1: Irgun places 1 Terror marker in any City without a Curfew marker.",
+            "Option 2: British lower the Haganah Track by 1."),
+        new Card("Illegal Immigration", "Event",
+            "Option 1: British lower Political Will by 1.",
+            "Option 2: Irgun places 1 Cell in any City."),
+        new Card("King David Hotel Bombing", "Event",
+            "Option 1: British remove up to 2 Police from the map.",
+            "Option 2: Irgun places 1 Sabotage marker in a City."),
+        new Card("Lehi (Stern Gang) Joins Irgun", "Event",
+            "Option 1: British lower Political Will by 1.",
+            "Option 2: Irgun places 1 Cell in any District."),
+        new Card("Operation Agatha", "Event",
+            "Option 1: British Search in 1 City then Mass Detention there. Shift Haganah Track 1 step to the left.",
+            "Option 2: Shift Haganah Track 1 step to the right. If it is now at 4, Irgun may perform Sabotage in 1 space."),
+        new Card("Operation Shark", "Event",
+            "Option 1: British remove up to 2 Police from the map.",
+            "Option 2: Irgun places 1 Sabotage marker in a City."),
+        new Card("SS Patria Sinks", "Event",
+            "Option 1: Irgun removes 1 Cell from the map.",
+            "Option 2: British place 1 Police in any one space."),
+        new Card("The Balfour Declaration", "Event",
+            "Option 1: British lower Political Will by 1.",
+            "Option 2: Irgun places 1 Cell in any City."),
+        new Card("The Suez Crisis", "Event",
+            "Option 1: British remove 1 Police from the map.",
+            "Option 2: Irgun places 1 Cell in any District."),
+        new Card("White Paper", "Event",
+            "Option 1: Irgun removes 1 Cell from the map.",
+            "Option 2: British place 1 Police in any one space."),
+        new Card("Zionist Congress", "Event",
+            "Option 1: British lower Political Will by 1.",
+            "Option 2: Irgun places 1 Cell in any City.")
+    };
+            // Initialize capability cards
+            capabilityCards = new List<Card>
     {
         new Card("Menachem Begin", "Capability",
             "Option 1: Documents captured: Each Arms Cache removed with Assault adds 2 Political Will and draws 2 Intel Chits.",
@@ -111,8 +118,8 @@ public class GameSetup
             "Option 2: Early IEDs: When Patrol moves Police to any space with a Sabotage marker, remove 1 Police to Available on a roll of 1-3.")
     };
 
-        // Initialize propaganda cards
-        propagandaCards = new List<Card>
+            // Initialize propaganda cards
+            propagandaCards = new List<Card>
         {
             new Card("Propaganda1", "Propaganda",
                 "Option 1: Propaganda 1 Text",
@@ -125,12 +132,12 @@ public class GameSetup
                 "Option 2: Alternative Propaganda 3 Text")
         };
 
-        // Initialize draw and discard piles
-        drawPile = new Stack<Card>();
-        discardPile = new List<Card>();
+            // Initialize draw and discard piles
+            drawPile = new Stack<Card>();
+            discardPile = new List<Card>();
 
-        // Initialize capabilities
-        britishCapabilities = new List<Capability>
+            // Initialize capabilities
+            britishCapabilities = new List<Capability>
         {
             new Capability("Alan Cunningham",
                 "Option 1: Restrained approach: British may conduct 2 Limited Operations then Restore. Cells released: British must place 2 Cells from Prison into any Cities.",
@@ -152,7 +159,7 @@ public class GameSetup
                 "Option 2: Early IEDs: When Patrol moves Police to any space with a Sabotage marker, remove 1 Police to Available on a roll of 1-3.")
         };
 
-        irgunCapabilities = new List<Capability>
+            irgunCapabilities = new List<Capability>
         {
             new Capability("Menachem Begin",
                 "Option 1: Documents captured: Each Arms Cache removed with Assault adds 2 Political Will and draws 2 Intel Chits.",
@@ -165,12 +172,12 @@ public class GameSetup
                 "Option 2: Pressures British: Lower Political Will by 1 for each Curfew on the map.")
         };
 
-        // Initialize selected capabilities
-        selectedBritishCapabilities = new List<Capability>();
-        selectedIrgunCapabilities = new List<Capability>();
+            // Initialize selected capabilities
+            selectedBritishCapabilities = new List<Capability>();
+            selectedIrgunCapabilities = new List<Capability>();
 
-        // Initialize areas
-        areas = new List<Area>
+            // Initialize areas
+            areas = new List<Area>
         {
             //Cities
             new Area("Haifa City", "City", 2, new List<string> { "Haifa District", "Railway Tel Aviv-Haifa" }),
@@ -195,204 +202,248 @@ public class GameSetup
             new Area("Available Irgun", "Available", 0, new List<string>()) // Available Irgun units
         };
 
-        Initiative = "Irgun"; // Irgun starts first
-        PoliticalWill = 18;   // Political Will starts at 18
-        HaganahTrack = 4;     // Haganah Track starts at 4
+            Initiative = "Irgun"; // Irgun starts first
+            PoliticalWill = 18;   // Political Will starts at 18
+            HaganahTrack = 4;     // Haganah Track starts at 4
 
-        FullOperationTaken = false;
-        EventTaken = false;
-        LimitedOperationTaken = false;
-    }
-    public void ResetOptionStates()
-    {
-        FullOperationTaken = false;
-        EventTaken = false;
-        LimitedOperationTaken = false;
-    }
-
-
-    public void SetupDeck()
-    {
-        var random = new Random();
-        var shuffledEventCards = eventCards.OrderBy(x => random.Next()).Take(18).ToList();
-
-        var pile1 = shuffledEventCards.Take(6).ToList();
-        var pile2 = shuffledEventCards.Skip(6).Take(6).ToList();
-        var pile3 = shuffledEventCards.Skip(12).Take(6).ToList();
-
-        pile1 = CreatePileWithPropaganda(pile1, propagandaCards[0]);
-        pile2 = CreatePileWithPropaganda(pile2, propagandaCards[1]);
-        pile3 = CreatePileWithPropaganda(pile3, propagandaCards[2]);
-
-        var combinedDeck = new List<Card>(pile1);
-        combinedDeck.AddRange(pile2);
-        combinedDeck.AddRange(pile3);
-
-        drawPile = new Stack<Card>(combinedDeck);
-    }
-
-
-
-    private List<Card> CreatePileWithPropaganda(List<Card> pile, Card propaganda)
-    {
-        var random = new Random();
-        var eventSubset = pile.Take(2).OrderBy(x => random.Next()).ToList();
-        eventSubset.Add(propaganda);
-        eventSubset = eventSubset.OrderBy(x => random.Next()).ToList();
-        pile.RemoveRange(0, 2);
-        pile.InsertRange(0, eventSubset);
-        return pile;
-    }
-
-    public Card DrawCard()
-    {
-        if (drawPile.Count > 0)
-        {
-            var card = drawPile.Pop();
-            discardPile.Add(card);
-            return card;
+            FullOperationTaken = false;
+            EventTaken = false;
+            LimitedOperationTaken = false;
         }
-        return null; // No cards left in the draw pile
-    }
-    public void SetupStartingBoardState()
-    {
-        PoliticalWill = 18;
-        HaganahTrack = 4;
-
-        // Clear any existing units
-        foreach (var area in areas)
+        private void InitializeIntelMarkers()
         {
-            area.Units.Clear();
+            var markers = new List<IntelMarker>
+        {
+            new IntelMarker(0),
+            new IntelMarker(0),
+            new IntelMarker(1),
+            new IntelMarker(1),
+            new IntelMarker(2),
+            new IntelMarker(2)
+        };
+
+            var random = new Random();
+            intelMarkers = new Stack<IntelMarker>(markers.OrderBy(m => random.Next()));
+            britishIntelMarkers = new List<IntelMarker>();
         }
 
-        // Irgun Units
-        GetAreaByName("Galilee").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
-        GetAreaByName("Haifa District").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
-        GetAreaByName("Haifa City").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
-        GetAreaByName("Samaria").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
-        GetAreaByName("Tel Aviv City").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
-        GetAreaByName("Lydda").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
-        GetAreaByName("Lydda").AddUnit(new Unit("Weapons", "Irgun", "Active"), 1);
-        GetAreaByName("Jerusalem District").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
-        GetAreaByName("Jerusalem District").AddUnit(new Unit("Weapons", "Irgun", "Active"), 1);
-        GetAreaByName("Jerusalem City").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
-        GetAreaByName("Gaza").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
-
-
-        // British Units
-        GetAreaByName("Galilee").AddUnit(new Unit("Troop", "British", "Active"), 2);
-        GetAreaByName("Haifa City").AddUnit(new Unit("Troop", "British", "Active"), 2);
-        GetAreaByName("Haifa City").AddUnit(new Unit("Police", "British", "Active"), 1);
-        GetAreaByName("Samaria").AddUnit(new Unit("Troop", "British", "Active"), 2);
-        GetAreaByName("Tel Aviv City").AddUnit(new Unit("Police", "British", "Active"), 1);
-        GetAreaByName("Tel Aviv City").AddUnit(new Unit("Troop", "British", "Active"), 2);
-        GetAreaByName("Jerusalem City").AddUnit(new Unit("Troop", "British", "Active"), 2);
-        GetAreaByName("Jerusalem City").AddUnit(new Unit("Police", "British", "Active"), 1);
-        GetAreaByName("Gaza").AddUnit(new Unit("Troop", "British", "Active"), 2);
-
-
-        // Assuming Available Irgun and Available British are holding areas for unused units
-        GetAreaByName("Available Irgun").AddUnit(new Unit("Cell", "Irgun", "Active"),6);
-        GetAreaByName("Available Irgun").AddUnit(new Unit("Weapons", "Irgun", "Active"), 3);
-        GetAreaByName("Available British").AddUnit(new Unit("Police", "British", "Active"),3);
-    }
-
-
-
-    public void AddBritishCapability(Capability capability)
-    {
-        selectedBritishCapabilities.Add(capability);
-    }
-
-    public void AddIrgunCapability(Capability capability)
-    {
-        selectedIrgunCapabilities.Add(capability);
-    }
-
-    public Stack<Card> GetDrawPile()
-    {
-        return drawPile;
-    }
-
-    public List<Card> GetDiscardPile()
-    {
-        return discardPile;
-    }
-
-    public List<Capability> GetBritishCapabilities()
-    {
-        return selectedBritishCapabilities;
-    }
-
-    public List<Capability> GetIrgunCapabilities()
-    {
-        return selectedIrgunCapabilities;
-    }
-
-    public List<Area> GetAreas()
-    {
-        return areas;
-    }
-
-    public Area GetAreaByName(string name)
-    {
-        return areas.FirstOrDefault(a => a.Name == name);
-    }
-
-    public List<Capability> GetAllBritishCapabilities()
-    {
-        return britishCapabilities;
-    }
-
-    public List<Capability> GetAllIrgunCapabilities()
-    {
-        return irgunCapabilities;
-    }
-    public void AddUnitToArea(string areaName, Unit unit)
-    {
-        var area = GetAreaByName(areaName);
-        if (area != null)
+        public IntelMarker DrawIntelMarker()
         {
-            area.AddUnit(unit);
-        }
-    }
-
-    public void RemoveUnitFromArea(string areaName, Unit unit)
-    {
-        var area = GetAreaByName(areaName);
-        if (area != null)
-        {
-            var unitToRemove = area.Units.FirstOrDefault(u => u.Type == unit.Type && u.Faction == unit.Faction && u.State == unit.State);
-            if (unitToRemove != null)
+            if (intelMarkers.Count > 0)
             {
-                area.RemoveUnit(unitToRemove);
+                var marker = intelMarkers.Pop();
+                britishIntelMarkers.Add(marker);
+                return marker;
+            }
+            return null;
+        }
+
+        public void ReturnIntelMarker(IntelMarker marker)
+        {
+            if (britishIntelMarkers.Contains(marker))
+            {
+                britishIntelMarkers.Remove(marker);
+                intelMarkers.Push(marker);
             }
         }
-    }
 
-    public void MoveUnitBetweenAreas(string fromAreaName, string toAreaName, Unit unit)
-    {
-        var fromArea = GetAreaByName(fromAreaName);
-        var toArea = GetAreaByName(toAreaName);
-
-        if (fromArea != null && toArea != null)
+        public List<IntelMarker> GetBritishIntelMarkers()
         {
-            var unitToMove = fromArea.Units.FirstOrDefault(u => u.Equals(unit));
-            if (unitToMove != null)
+            return new List<IntelMarker>(britishIntelMarkers);
+        }
+
+        public int GetIntelMarkerPoolCount()
+        {
+            return intelMarkers.Count;
+        }
+
+        public void ResetOptionStates()
+        {
+            FullOperationTaken = false;
+            EventTaken = false;
+            LimitedOperationTaken = false;
+        }
+
+
+        public void SetupDeck()
+        {
+            var random = new Random();
+            var shuffledEventCards = eventCards.OrderBy(x => random.Next()).Take(18).ToList();
+
+            var pile1 = shuffledEventCards.Take(6).ToList();
+            var pile2 = shuffledEventCards.Skip(6).Take(6).ToList();
+            var pile3 = shuffledEventCards.Skip(12).Take(6).ToList();
+
+            pile1 = CreatePileWithPropaganda(pile1, propagandaCards[0]);
+            pile2 = CreatePileWithPropaganda(pile2, propagandaCards[1]);
+            pile3 = CreatePileWithPropaganda(pile3, propagandaCards[2]);
+
+            var combinedDeck = new List<Card>(pile1);
+            combinedDeck.AddRange(pile2);
+            combinedDeck.AddRange(pile3);
+
+            drawPile = new Stack<Card>(combinedDeck);
+        }
+
+
+
+        private List<Card> CreatePileWithPropaganda(List<Card> pile, Card propaganda)
+        {
+            var random = new Random();
+            var eventSubset = pile.Take(2).OrderBy(x => random.Next()).ToList();
+            eventSubset.Add(propaganda);
+            eventSubset = eventSubset.OrderBy(x => random.Next()).ToList();
+            pile.RemoveRange(0, 2);
+            pile.InsertRange(0, eventSubset);
+            return pile;
+        }
+
+        public Card DrawCard()
+        {
+            if (drawPile.Count > 0)
             {
-                fromArea.RemoveUnit(unitToMove);
-                toArea.AddUnit(unitToMove);
+                var card = drawPile.Pop();
+                discardPile.Add(card);
+                return card;
+            }
+            return null; // No cards left in the draw pile
+        }
+        public void SetupStartingBoardState()
+        {
+            PoliticalWill = 18;
+            HaganahTrack = 4;
+
+            // Clear any existing units
+            foreach (var area in areas)
+            {
+                area.Units.Clear();
+            }
+
+            // Irgun Units
+            GetAreaByName("Galilee").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+            GetAreaByName("Haifa District").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+            GetAreaByName("Haifa City").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+            GetAreaByName("Samaria").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+            GetAreaByName("Tel Aviv City").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+            GetAreaByName("Lydda").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+            GetAreaByName("Lydda").AddUnit(new Unit("Weapons", "Irgun", "Active"), 1);
+            GetAreaByName("Jerusalem District").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+            GetAreaByName("Jerusalem District").AddUnit(new Unit("Weapons", "Irgun", "Active"), 1);
+            GetAreaByName("Jerusalem City").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+            GetAreaByName("Gaza").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+
+
+            // British Units
+            GetAreaByName("Galilee").AddUnit(new Unit("Troop", "British", "Active"), 2);
+            GetAreaByName("Haifa City").AddUnit(new Unit("Troop", "British", "Active"), 2);
+            GetAreaByName("Haifa City").AddUnit(new Unit("Police", "British", "Active"), 1);
+            GetAreaByName("Samaria").AddUnit(new Unit("Troop", "British", "Active"), 2);
+            GetAreaByName("Tel Aviv City").AddUnit(new Unit("Police", "British", "Active"), 1);
+            GetAreaByName("Tel Aviv City").AddUnit(new Unit("Troop", "British", "Active"), 2);
+            GetAreaByName("Jerusalem City").AddUnit(new Unit("Troop", "British", "Active"), 2);
+            GetAreaByName("Jerusalem City").AddUnit(new Unit("Police", "British", "Active"), 1);
+            GetAreaByName("Gaza").AddUnit(new Unit("Troop", "British", "Active"), 2);
+
+
+            // Assuming Available Irgun and Available British are holding areas for unused units
+            GetAreaByName("Available Irgun").AddUnit(new Unit("Cell", "Irgun", "Active"), 6);
+            GetAreaByName("Available Irgun").AddUnit(new Unit("Weapons", "Irgun", "Active"), 3);
+            GetAreaByName("Available British").AddUnit(new Unit("Police", "British", "Active"), 3);
+
+            // Example of adding markers
+            GetAreaByName("Haifa City").AddMarker("Sabotage");
+            GetAreaByName("Jerusalem City").AddMarker("Curfew");
+            GetAreaByName("Jerusalem City").AddMarker("Terror");
+        }
+
+
+
+        public void AddBritishCapability(Capability capability)
+        {
+            selectedBritishCapabilities.Add(capability);
+        }
+
+        public void AddIrgunCapability(Capability capability)
+        {
+            selectedIrgunCapabilities.Add(capability);
+        }
+
+        public Stack<Card> GetDrawPile()
+        {
+            return drawPile;
+        }
+
+        public List<Card> GetDiscardPile()
+        {
+            return discardPile;
+        }
+
+        public List<Capability> GetBritishCapabilities()
+        {
+            return selectedBritishCapabilities;
+        }
+
+        public List<Capability> GetIrgunCapabilities()
+        {
+            return selectedIrgunCapabilities;
+        }
+
+        public List<Area> GetAreas()
+        {
+            return areas;
+        }
+
+        public Area GetAreaByName(string name)
+        {
+            return areas.FirstOrDefault(a => a.Name == name);
+        }
+
+        public List<Capability> GetAllBritishCapabilities()
+        {
+            return britishCapabilities;
+        }
+
+        public List<Capability> GetAllIrgunCapabilities()
+        {
+            return irgunCapabilities;
+        }
+        public void AddUnitToArea(string areaName, Unit unit)
+        {
+            var area = GetAreaByName(areaName);
+            if (area != null)
+            {
+                area.AddUnit(unit);
             }
         }
+
+        public void RemoveUnitFromArea(string areaName, Unit unit)
+        {
+            var area = GetAreaByName(areaName);
+            if (area != null)
+            {
+                var unitToRemove = area.Units.FirstOrDefault(u => u.Type == unit.Type && u.Faction == unit.Faction && u.State == unit.State);
+                if (unitToRemove != null)
+                {
+                    area.RemoveUnit(unitToRemove);
+                }
+            }
+        }
+
+        public void MoveUnitBetweenAreas(string fromAreaName, string toAreaName, Unit unit)
+        {
+            var fromArea = GetAreaByName(fromAreaName);
+            var toArea = GetAreaByName(toAreaName);
+
+            if (fromArea != null && toArea != null)
+            {
+                var unitToMove = fromArea.Units.FirstOrDefault(u => u.Equals(unit));
+                if (unitToMove != null)
+                {
+                    fromArea.RemoveUnit(unitToMove);
+                    toArea.AddUnit(unitToMove);
+                }
+            }
+        }
+
     }
-
-
-
-
-
-
-
-
-
-
 }
