@@ -17,16 +17,27 @@ public class Area
         Units = new List<Unit>();
     }
 
-    public void AddUnit(Unit unit)
+    public void AddUnit(Unit unit, int quantity = 1)
     {
-        Units.Add(unit);
+        for (int i = 0; i < quantity; i++)
+        {
+            Units.Add(new Unit(unit.Type, unit.Faction, unit.State));
+        }
     }
+
 
     public void RemoveUnit(Unit unit)
     {
-        Units.Remove(unit);
+        var unitToRemove = Units.FirstOrDefault(u => u.Equals(unit));
+        if (unitToRemove != null)
+        {
+            Units.Remove(unitToRemove);
+        }
     }
+
+
 }
+
 
 
 

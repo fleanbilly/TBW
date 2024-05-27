@@ -17,6 +17,9 @@ public class GameSetup
     public string Initiative { get; set; }
     public int PoliticalWill { get; set; }
     public int HaganahTrack { get; set; }
+    public bool FullOperationTaken { get; set; }
+    public bool EventTaken { get; set; }
+    public bool LimitedOperationTaken { get; set; }
 
     public GameSetup()
     {
@@ -195,10 +198,20 @@ public class GameSetup
         Initiative = "Irgun"; // Irgun starts first
         PoliticalWill = 18;   // Political Will starts at 18
         HaganahTrack = 4;     // Haganah Track starts at 4
+
+        FullOperationTaken = false;
+        EventTaken = false;
+        LimitedOperationTaken = false;
+    }
+    public void ResetOptionStates()
+    {
+        FullOperationTaken = false;
+        EventTaken = false;
+        LimitedOperationTaken = false;
     }
 
-    
-public void SetupDeck()
+
+    public void SetupDeck()
     {
         var random = new Random();
         var shuffledEventCards = eventCards.OrderBy(x => random.Next()).Take(18).ToList();
@@ -241,6 +254,50 @@ public void SetupDeck()
         }
         return null; // No cards left in the draw pile
     }
+    public void SetupStartingBoardState()
+    {
+        PoliticalWill = 18;
+        HaganahTrack = 4;
+
+        // Clear any existing units
+        foreach (var area in areas)
+        {
+            area.Units.Clear();
+        }
+
+        // Irgun Units
+        GetAreaByName("Galilee").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+        GetAreaByName("Haifa District").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+        GetAreaByName("Haifa City").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+        GetAreaByName("Samaria").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+        GetAreaByName("Tel Aviv City").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+        GetAreaByName("Lydda").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+        GetAreaByName("Lydda").AddUnit(new Unit("Weapons", "Irgun", "Active"), 1);
+        GetAreaByName("Jerusalem District").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+        GetAreaByName("Jerusalem District").AddUnit(new Unit("Weapons", "Irgun", "Active"), 1);
+        GetAreaByName("Jerusalem City").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+        GetAreaByName("Gaza").AddUnit(new Unit("Cell", "Irgun", "Hidden"), 1);
+
+
+        // British Units
+        GetAreaByName("Galilee").AddUnit(new Unit("Troop", "British", "Active"), 2);
+        GetAreaByName("Haifa City").AddUnit(new Unit("Troop", "British", "Active"), 2);
+        GetAreaByName("Haifa City").AddUnit(new Unit("Police", "British", "Active"), 1);
+        GetAreaByName("Samaria").AddUnit(new Unit("Troop", "British", "Active"), 2);
+        GetAreaByName("Tel Aviv City").AddUnit(new Unit("Police", "British", "Active"), 1);
+        GetAreaByName("Tel Aviv City").AddUnit(new Unit("Troop", "British", "Active"), 2);
+        GetAreaByName("Jerusalem City").AddUnit(new Unit("Troop", "British", "Active"), 2);
+        GetAreaByName("Jerusalem City").AddUnit(new Unit("Police", "British", "Active"), 1);
+        GetAreaByName("Gaza").AddUnit(new Unit("Troop", "British", "Active"), 2);
+
+
+        // Assuming Available Irgun and Available British are holding areas for unused units
+        GetAreaByName("Available Irgun").AddUnit(new Unit("Cell", "Irgun", "Active"),6);
+        GetAreaByName("Available Irgun").AddUnit(new Unit("Weapons", "Irgun", "Active"), 3);
+        GetAreaByName("Available British").AddUnit(new Unit("Police", "British", "Active"),3);
+    }
+
+
 
     public void AddBritishCapability(Capability capability)
     {
@@ -291,4 +348,51 @@ public void SetupDeck()
     {
         return irgunCapabilities;
     }
+    public void AddUnitToArea(string areaName, Unit unit)
+    {
+        var area = GetAreaByName(areaName);
+        if (area != null)
+        {
+            area.AddUnit(unit);
+        }
+    }
+
+    public void RemoveUnitFromArea(string areaName, Unit unit)
+    {
+        var area = GetAreaByName(areaName);
+        if (area != null)
+        {
+            var unitToRemove = area.Units.FirstOrDefault(u => u.Type == unit.Type && u.Faction == unit.Faction && u.State == unit.State);
+            if (unitToRemove != null)
+            {
+                area.RemoveUnit(unitToRemove);
+            }
+        }
+    }
+
+    public void MoveUnitBetweenAreas(string fromAreaName, string toAreaName, Unit unit)
+    {
+        var fromArea = GetAreaByName(fromAreaName);
+        var toArea = GetAreaByName(toAreaName);
+
+        if (fromArea != null && toArea != null)
+        {
+            var unitToMove = fromArea.Units.FirstOrDefault(u => u.Equals(unit));
+            if (unitToMove != null)
+            {
+                fromArea.RemoveUnit(unitToMove);
+                toArea.AddUnit(unitToMove);
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }

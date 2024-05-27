@@ -8,14 +8,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="839*"/>
+            <ColumnDefinition Width="27*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <!-- Deck and Card Interaction -->
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="10">
-            <Button Content="Draw Card" Click="DrawCardButton_Click" Margin="5"/>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="10,10,10,10">
+            <Button Content="Draw Card" Click="DrawCardButton_Click" Margin="5" Width="100"/>
             <StackPanel Orientation="Horizontal" Margin="5">
                 <TextBlock Name="drawDeckTextBlock" Text="Draw Deck: 21 cards" Margin="5"/>
                 <Button Content="Show Draw Pile" Click="ShowDrawPileButton_Click" Width="120" Margin="5"/>
@@ -28,16 +28,16 @@
             <TextBlock Name="cardOption1TextBlock" Text="Option 1" Margin="5"/>
             <TextBlock Name="cardOption2TextBlock" Text="Option 2" Margin="5"/>
             <TextBlock Name="cardSelectedOptionTextBlock" Text="Selected Option" Margin="5"/>
-            <Button Content="Select Option 1" Click="SelectOption1Button_Click" Margin="5"/>
-            <Button Content="Select Option 2" Click="SelectOption2Button_Click" Margin="5"/>
+            <Button x:Name="selectOption1Button" Content="Select Option 1" Click="SelectOption1Button_Click" HorizontalAlignment="Left" Width ="120" Margin="5"/>
+            <Button x:Name="selectOption2Button" Content="Select Option 2" Click="SelectOption2Button_Click" HorizontalAlignment="Left" Width ="120" Margin="5"/>
         </StackPanel>
 
         <!-- Board State Display -->
         <TextBox Name="boardTextBox" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" IsReadOnly="True"
-                 Text="Board state will be displayed here..." VerticalScrollBarVisibility="Auto" Margin="10"/>
+                 Text="Board state will be displayed here..." VerticalScrollBarVisibility="Auto" Margin="10,10,10,10"/>
 
         <!-- Initiative Toggle and Trackers -->
-        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Margin="10">
+        <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Margin="10,10,10,10">
             <CheckBox Name="initiativeToggleButton" Content="Initiative: Irgun" IsChecked="True"
                       Checked="InitiativeToggleButton_Checked" Unchecked="InitiativeToggleButton_Unchecked"/>
             <StackPanel Orientation="Horizontal" Margin="5">
@@ -52,6 +52,15 @@
                 <Button Content="+" Click="IncreaseHaganahTrack_Click" Width="20" Margin="5"/>
                 <Button Content="-" Click="DecreaseHaganahTrack_Click" Width="20" Margin="5"/>
             </StackPanel>
+            <!-- Option Buttons Section -->
+            <StackPanel Orientation="Vertical" Margin="10,100,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Button x:Name="FullOperationButton" Content="Full Operation Special Activity" Click="FullOperationButton_Click" Width="200" Margin="5"/>
+                <Button x:Name="EventButton" Content="Take Event / Block Event" Click="EventButton_Click" Width="200" Margin="5"/>
+                <Button x:Name="LimitedOperationButton" Content="Limited Operation" Click="LimitedOperationButton_Click" Width="200" Margin="5"/>
+            </StackPanel>
+            <Button Content="Manage Units" Click="OpenManageUnitsWindow_Click" Width="150" Margin="5"/>
+            <Button Content="Export Game State" Click="ExportGameStateButton_Click" Width="150" Margin="5"/>
+
         </StackPanel>
     </Grid>
 </Window>
