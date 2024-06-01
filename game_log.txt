@@ -1,0 +1,554 @@
+Game Event: Initial Game State
+{
+  "turnNumber": 1,
+  "currentPlayer": "Irgun",
+  "initiative": "Irgun",
+  "politicalWill": 18,
+  "haganahTrack": 4,
+  "selectedCapabilities": {
+    "british": [],
+    "irgun": []
+  },
+  "areas": [
+    {
+      "name": "Haifa City",
+      "type": "City",
+      "pointValue": 2,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 1,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Tel Aviv City",
+      "type": "City",
+      "pointValue": 2,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 1,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Jerusalem City",
+      "type": "City",
+      "pointValue": 2,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 1,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Galilee",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Haifa District",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Samaria",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Lydda",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Jerusalem District",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Gaza",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Haifa-Syria",
+      "type": "Railway",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Tel Aviv-Haifa",
+      "type": "Railway",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Tel Aviv-Jerusalem",
+      "type": "Railway",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Tel Aviv-Egypt",
+      "type": "Railway",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Prison",
+      "type": "Prison",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Available British",
+      "type": "Available",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 3,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Available Irgun",
+      "type": "Available",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 6,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    }
+  ],
+  "eventDeck": {
+    "drawPileCount": 21,
+    "discardPileCount": 0
+  },
+  "currentCard": {
+    "title": "P8 - Harry Truman*",
+    "type": "Event"
+  },
+  "availableOptions": [
+    "Full Operation and Special Activity",
+    "Take Event / Block Event",
+    "Limited Operation"
+  ],
+  "intelMarkerInfo": {
+    "count": 0,
+    "values": []
+  }
+}
+Game Event: New Draw Card
+Card 1 drawn.
+Option 1: Offers support: Increase Political Will by 2. British may Deploy in up to 3 spaces.
+Option 2: Pressures British: Lower Political Will by 1 for each Curfew on the map.
+Game Event: Irgun Took a Full Operation and/or a Special Activity
+Operation: Recruit, Area: Haifa City
+Operation: Recruit, Area: Haifa City
+Operation: Recruit, Area: Jerusalem City
+Operation: Recruit, Area: Jerusalem City
+Operation: Recruit, Area: Lydda
+Operation: Recruit, Area: Lydda
+Special Activity: Silence, Area: Jerusalem City
+
+Game Event: Board State after Irgun moves.
+{
+  "turnNumber": 1,
+  "currentPlayer": "Irgun",
+  "initiative": "Irgun",
+  "politicalWill": 18,
+  "haganahTrack": 4,
+  "selectedCapabilities": {
+    "british": [],
+    "irgun": []
+  },
+  "areas": [
+    {
+      "name": "Haifa City",
+      "type": "City",
+      "pointValue": 2,
+      "irgunUnits": {
+        "cells": 3,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 1,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Tel Aviv City",
+      "type": "City",
+      "pointValue": 2,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 1,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Jerusalem City",
+      "type": "City",
+      "pointValue": 2,
+      "irgunUnits": {
+        "cells": 3,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 1,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Galilee",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Haifa District",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Samaria",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Lydda",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 3,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Jerusalem District",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Gaza",
+      "type": "District",
+      "pointValue": 1,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Haifa-Syria",
+      "type": "Railway",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Tel Aviv-Haifa",
+      "type": "Railway",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Tel Aviv-Jerusalem",
+      "type": "Railway",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Tel Aviv-Egypt",
+      "type": "Railway",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Prison",
+      "type": "Prison",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Available British",
+      "type": "Available",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 3,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Available Irgun",
+      "type": "Available",
+      "pointValue": 0,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    }
+  ],
+  "eventDeck": {
+    "drawPileCount": 20,
+    "discardPileCount": 1
+  },
+  "currentCard": {
+    "title": "P8 - Harry Truman*",
+    "type": "Event"
+  },
+  "availableOptions": [
+    "Take Event / Block Event",
+    "Limited Operation"
+  ],
+  "intelMarkerInfo": {
+    "count": 0,
+    "values": []
+  }
+}

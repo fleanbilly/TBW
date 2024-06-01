@@ -21,9 +21,104 @@ namespace TBW
         {
             gameSetup = new GameSetup();
             gameSetup.SetupDeck();
-            gameSetup.SetupStartingBoardState(); 
-            DisplayNextCard();
+            gameSetup.SetupStartingBoardState();
+       
+        }
+
+
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists("game_log.txt"))
+            {
+                File.SetAttributes("game_log.txt", FileAttributes.Normal);
+                File.Delete("game_log.txt");
+            }
+            // Create a new game log file
+            File.Create("game_log.txt").Dispose();
+            LogInitialGameState(); // Log the initial game state
+            DrawNextCard();
             UpdateBoardState();
+            DrawCardButton.IsEnabled = true;
+            selectOption1Button.IsEnabled = false; // Disable initially
+            selectOption2Button.IsEnabled = false; // Disable initially
+        }
+        private void SaveGameLogButton_Click(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Text files (*.txt)|*.txt",
+                FileName = "game_log.txt"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.Copy("game_log.txt", saveFileDialog.FileName, true);
+                MessageBox.Show("Game log saved successfully.", "Save Game Log", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void DrawNextCard()
+        {
+            currentCard = gameSetup.DrawCard();
+            if (currentCard != null)
+            {
+                DisplayCurrentCard();
+              
+            }
+            else
+            {
+                MessageBox.Show("No more cards in the draw pile.");
+            }
+        }
+
+
+
+
+        //private void DrawInitialCard()
+        //{
+        //    currentCard = gameSetup.PeekAtTopCard(); // Peek at the top card without removing it from the deck
+        //    if (currentCard != null)
+        //    {
+        //        DisplayCurrentCard();
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("No more cards in the draw pile.");
+        //    }
+        //}
+
+
+        private void DisplayCurrentCard()
+        {
+            cardTitleTextBlock.Text = currentCard.Title;
+            cardOption1TextBlock.Text = currentCard.Option1;
+            cardOption2TextBlock.Text = currentCard.Option2;
+            cardSelectedOptionTextBlock.Text = "Selected Option: None";
+            selectOption1Button.IsEnabled = true;
+            selectOption2Button.IsEnabled = true;
+            LogGameAction("New Draw Card", $"Card {gameSetup.TurnNumber} drawn.\n{currentCard.Option1}\n{currentCard.Option2}");
+        }
+
+        // Add this method to handle logging the event action
+        private void LogCapabilityAction(string title, string option, string faction)
+        {
+            string logEntry = $"{DateTime.Now}: {faction} selected capability '{title}' with '{option}'.";
+            LogGameAction("Capability Selected", logEntry);
+        }
+
+        private void LogEventAction(string title, string option)
+        {
+            string logEntry = $"{gameSetup.CurrentTurnPlayer} played an Event Card: Event '{title}' executed option '{option}'.";
+            LogGameAction("Event Card Played", logEntry);
+          
+        }
+
+        private void LogPropagandaAction(string title)
+        {
+            string logEntry = $"{DateTime.Now}: Propaganda card '{title}' executed.";
+            File.AppendAllText("game_log.txt", logEntry + Environment.NewLine);
+            gameLogTextBox.AppendText(logEntry + Environment.NewLine);
         }
         private void DrawIntelMarkerButton_Click(object sender, RoutedEventArgs e)
         {
@@ -37,6 +132,7 @@ namespace TBW
                 MessageBox.Show("No more Intel Markers to draw.");
             }
             UpdateBoardState();
+            LogGameAction("Draw Intel Marker", "British drew Intel Marker");
         }
         private void ReturnSpecificIntelMarker()
         {
@@ -91,8 +187,8 @@ namespace TBW
 
                 selectOption1Button.IsEnabled = true;
                 selectOption2Button.IsEnabled = true;
-
                 UpdateBoardState();
+                
             }
             else
             {
@@ -100,68 +196,16 @@ namespace TBW
             }
         }
 
-        //private void UpdateBoardState(string selectedOption = "")
-        //{
-        //    boardTextBox.Text = "Board State and Scoring Information\n";
-        //    boardTextBox.Text += $"Current Player: {gameSetup.Initiative}\n";
-        //    boardTextBox.Text += $"Political Will: {gameSetup.PoliticalWill}\n";
-        //    boardTextBox.Text += $"Haganah Track: {gameSetup.HaganahTrack}\n\n";
-
-        //    var intelMarkers = gameSetup.GetBritishIntelMarkers();
-        //    boardTextBox.Text = $"British Intel Markers: {string.Join(", ", intelMarkers.Select(m => m.Value))}\n";
-        //    boardTextBox.Text += $"Intel Marker Pool Count: {gameSetup.GetIntelMarkerPoolCount()}\n";
 
 
-        //    if (!string.IsNullOrEmpty(selectedOption))
-        //    {
-        //        var availableOptions = new List<string> { "Full Operation and Special Activity", "Take Event / Block Event", "Limited Operation" };
-        //        availableOptions.Remove(selectedOption);
-        //        boardTextBox.Text += $"Selected Option: {selectedOption}\n";
-        //        boardTextBox.Text += $"Available Options: {string.Join(", ", availableOptions)}\n\n";
-        //    }
-
-        //    boardTextBox.Text += "Selected Capabilities:\n";
-        //    boardTextBox.Text += string.Join("\n", gameSetup.GetBritishCapabilities().Select(c => $"{c.Name}: {GetSelectedOptionText(c)}"));
-        //    boardTextBox.Text += "\n";
-        //    boardTextBox.Text += string.Join("\n", gameSetup.GetIrgunCapabilities().Select(c => $"{c.Name}: {GetSelectedOptionText(c)}"));
-        //    boardTextBox.Text += "\n\n";
-
-        //    foreach (var area in gameSetup.GetAreas())
-        //    {
-        //        boardTextBox.Text += $"{area.Name} ({area.Type}) - Points: {area.PointValue}\n";
-        //        if (area.Name != "Available British")
-        //        {
-        //            boardTextBox.Text += $"Irgun: Cells: {area.Units.Count(u => u.Type == "Cell" && u.Faction == "Irgun")} - {area.Units.Count(u => u.Type == "Cell" && u.Faction == "Irgun" && u.State == "Hidden")} hidden, Weapons: {area.Units.Count(u => u.Type == "Weapon" && u.Faction == "Irgun")}\n";
-        //        }
-        //        if (area.Name != "Available Irgun")
-        //        {
-        //            boardTextBox.Text += $"British: Police: {area.Units.Count(u => u.Type == "Police" && u.Faction == "British")} - Troops: {area.Units.Count(u => u.Type == "Troop" && u.Faction == "British")}\n";
-        //        }
-        //        boardTextBox.Text += $"Markers: {string.Join(", ", area.Markers)}\n"; // Add this line to display markers
-        //        boardTextBox.Text += "\n";
-        //    }
-
-        //    initiativeToggleButton.Content = gameSetup.Initiative == "Irgun" ? "Initiative: Irgun" : "Initiative: British";
-        //    politicalWillTextBlock.Text = gameSetup.PoliticalWill.ToString();
-        //    haganahTrackTextBlock.Text = gameSetup.HaganahTrack.ToString();
-
-        //    drawDeckTextBlock.Text = $"Draw Deck: {gameSetup.GetDrawPile().Count} cards";
-        //    discardDeckTextBlock.Text = $"Discard Pile: {gameSetup.GetDiscardPile().Count} cards";
-        //}
-        private void UpdateBoardState(string selectedOption = "")
+        public void UpdateBoardState(string selectedOption = "")
         {
             boardTextBox.Text = "Board State and Scoring Information\n";
             boardTextBox.Text += $"Current Player: {gameSetup.Initiative}\n";
             boardTextBox.Text += $"Political Will: {gameSetup.PoliticalWill}\n";
             boardTextBox.Text += $"Haganah Track: {gameSetup.HaganahTrack}\n\n";
-
-            if (!string.IsNullOrEmpty(selectedOption))
-            {
-                var availableOptions = new List<string> { "Full Operation and Special Activity", "Take Event / Block Event", "Limited Operation" };
-                availableOptions.Remove(selectedOption);
-                boardTextBox.Text += $"Selected Option: {selectedOption}\n";
-                boardTextBox.Text += $"Available Options: {string.Join(", ", availableOptions)}\n\n";
-            }
+            boardTextBox.Text += $"Available Options for player: {string.Join(", ", gameSetup.AvailableOptions("list"))}\n\n";
+            
 
             boardTextBox.Text += "Selected Capabilities:\n";
             boardTextBox.Text += string.Join("\n", gameSetup.GetBritishCapabilities().Select(c => $"{c.Name}: {GetSelectedOptionText(c)}"));
@@ -199,16 +243,23 @@ namespace TBW
         }
 
 
-
-
-
-
-    
-
         private void DrawCardButton_Click(object sender, RoutedEventArgs e)
         {
-            DisplayNextCard();
+            
+            gameSetup.IncrementTurnNumber();
+            DrawNextCard();
+            LogGameAction("Draw Card", $"Card {gameSetup.TurnNumber} drawn.");
+            UpdateBoardState();
+            fullOperationButton.IsEnabled = true;
+            limitedOperationButton.IsEnabled = true;
+            eventButton.IsEnabled = true;
+            gameSetup.AvailableOptions("reset");
+
+
         }
+
+
+
 
         private void ShowDiscardPileButton_Click(object sender, RoutedEventArgs e)
         {
@@ -223,10 +274,12 @@ namespace TBW
             MessageBox.Show($"There are {drawPile.Count} cards left to play.", $"Draw Pile ({drawPile.Count} cards left to play)");
         }
 
+
         private void SelectOption1Button_Click(object sender, RoutedEventArgs e)
         {
             if (currentCard != null)
             {
+              
                 currentCard.SelectOption(1);
                 cardSelectedOptionTextBlock.Text = "Selected Option: 1";
                 selectOption1Button.IsEnabled = false;
@@ -241,20 +294,31 @@ namespace TBW
                     {
                         capability.SelectOption(1);
                         gameSetup.AddBritishCapability(capability); // Add to the selected list
+                        LogCapabilityAction(currentCard.Title, currentCard.Option1, "British");
                         UpdateBoardState();
                     }
                 }
-                else
+                else if (currentCard.Type == "Event")
                 {
+                    LogEventAction(currentCard.Title, currentCard.Option1);
                     UpdateBoardState();
                 }
+                else if (currentCard.Type == "Propaganda")
+                {
+                    LogPropagandaAction(currentCard.Title);
+                    UpdateBoardState();
+                }
+
+               
             }
+            eventButton.IsEnabled = false;
         }
 
         private void SelectOption2Button_Click(object sender, RoutedEventArgs e)
         {
             if (currentCard != null)
             {
+               
                 currentCard.SelectOption(2);
                 cardSelectedOptionTextBlock.Text = "Selected Option: 2";
                 selectOption1Button.IsEnabled = false;
@@ -268,16 +332,48 @@ namespace TBW
                     if (capability != null)
                     {
                         capability.SelectOption(2);
-                        gameSetup.AddBritishCapability(capability); // Add to the selected list
+                        gameSetup.AddIrgunCapability(capability); // Add to the selected list
+                        LogCapabilityAction(currentCard.Title, currentCard.Option2, "Irgun");
                         UpdateBoardState();
                     }
                 }
-                else
+                else if (currentCard.Type == "Event")
                 {
+                    LogEventAction(currentCard.Title, currentCard.Option2);
                     UpdateBoardState();
                 }
+                else if (currentCard.Type == "Propaganda")
+                {
+                    LogPropagandaAction(currentCard.Title);
+                    UpdateBoardState();
+                }
+
+                
             }
+            eventButton.IsEnabled = false;
         }
+
+
+        private void FullOperationButton_Click(object sender, RoutedEventArgs e)
+        {
+            FullOperationWindow fullOperationWindow = new FullOperationWindow(gameSetup, this);
+           
+            fullOperationWindow.Owner = this;
+
+            if (fullOperationWindow.ShowDialog() == true)
+            {
+                string loggedActions = fullOperationWindow.GetLoggedActions();
+                LogGameAction($"{gameSetup.CurrentTurnPlayer} Took a Full Operation and/or a Special Activity", loggedActions);
+                fullOperationButton.IsEnabled = false;
+
+            }
+            else {
+                fullOperationButton.IsEnabled = true;
+            }
+            gameSetup.AvailableOptions("remove", "Full Operation and Special Activity");
+        }
+
+
 
         private void InitiativeToggleButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -285,6 +381,7 @@ namespace TBW
             {
                 gameSetup.Initiative = "Irgun";
                 initiativeToggleButton.Content = "Initiative: Irgun";
+                gameSetup.CurrentTurnPlayer = "Irgun";
                 UpdateBoardState();
             }
         }
@@ -294,6 +391,7 @@ namespace TBW
             if (gameSetup != null)
             {
                 gameSetup.Initiative = "British";
+                gameSetup.CurrentTurnPlayer = "British";
                 initiativeToggleButton.Content = "Initiative: British";
                 UpdateBoardState();
             }
@@ -305,6 +403,7 @@ namespace TBW
             {
                 gameSetup.PoliticalWill++;
                 UpdateBoardState();
+                LogGameAction($"{gameSetup.CurrentTurnPlayer} -Increase Political Will", $"Political Will increased to {gameSetup.PoliticalWill}");
             }
         }
 
@@ -314,6 +413,7 @@ namespace TBW
             {
                 gameSetup.PoliticalWill--;
                 UpdateBoardState();
+                LogGameAction($"{gameSetup.CurrentTurnPlayer} -Decrease Political Will", $"Political Will decreased to {gameSetup.PoliticalWill}");
             }
         }
 
@@ -323,6 +423,7 @@ namespace TBW
             {
                 gameSetup.HaganahTrack++;
                 UpdateBoardState();
+                LogGameAction($"{gameSetup.CurrentTurnPlayer} -Increase Haganah Track", $"Haganah Track increased to {gameSetup.HaganahTrack}");
             }
         }
 
@@ -332,29 +433,55 @@ namespace TBW
             {
                 gameSetup.HaganahTrack--;
                 UpdateBoardState();
+                LogGameAction($"{gameSetup.CurrentTurnPlayer} -Decrease Haganah Track", $"Haganah Track decreased to {gameSetup.HaganahTrack}");
             }
         }
 
-        private void FullOperationButton_Click(object sender, RoutedEventArgs e)
+       private void LogBoardState_Click(object sender, RoutedEventArgs e)
         {
-            gameSetup.FullOperationTaken = true;
-            DisableOptionButtons("Full Operation and Special Activity");
-            UpdateBoardState("Full Operation and Special Activity");
+            LogGameAction($"Board State after {gameSetup.CurrentTurnPlayer} moves.", ExportGameStateToJson("game_state.json"));
+           
         }
 
         private void EventButton_Click(object sender, RoutedEventArgs e)
         {
             gameSetup.EventTaken = true;
             DisableOptionButtons("Take Event / Block Event");
+            selectOption1Button.IsEnabled = true; // Enable when event action is chosen
+            selectOption2Button.IsEnabled = true; // Enable when event action is chosen
+            gameSetup.AvailableOptions("remove", "Take Event / Block Event");
             UpdateBoardState("Take Event / Block Event");
         }
 
+
         private void LimitedOperationButton_Click(object sender, RoutedEventArgs e)
         {
-            gameSetup.LimitedOperationTaken = true;
-            DisableOptionButtons("Limited Operation");
-            UpdateBoardState("Limited Operation");
+            var limitedOperationWindow = new LimitedOperationWindow(gameSetup, this);
+            limitedOperationWindow.Owner = this;
+
+            if (limitedOperationWindow.ShowDialog() == true)
+            {
+                string selectedOperation = limitedOperationWindow.SelectedOperation;
+                string selectedArea = limitedOperationWindow.SelectedArea;
+
+                if (!string.IsNullOrEmpty(selectedOperation) && !string.IsNullOrEmpty(selectedArea))
+                {
+                    LogGameAction($"{gameSetup.CurrentTurnPlayer} performed {selectedOperation} in {selectedArea}", "");
+                    if (gameSetup.HaganahTrack < 4)
+                    {
+                        limitedOperationButton.IsEnabled = false;
+                    }
+
+                }
+            }
+            else { 
+             limitedOperationButton.IsEnabled = true;
+            }
+            gameSetup.AvailableOptions("remove", "Limited Operation");
         }
+
+
+
 
         private void DisableOptionButtons(string selectedOption)
         {
@@ -363,15 +490,26 @@ namespace TBW
             limitedOperationButton.IsEnabled = selectedOption != "Limited Operation";
         }
 
-        public void ExportGameStateToJson(string filePath)
+        public string ExportGameStateToJson(string filePath, bool exportJson = false)
         {
+            // Ensure currentCard is not null by peeking at the top card
+            if (currentCard == null)
+            {
+                currentCard = gameSetup.PeekAtTopCard();
+            }
+
             var intelMarkerInfo = gameSetup.Initiative == "British"
                 ? new { count = gameSetup.GetBritishIntelMarkers().Count, values = gameSetup.GetBritishIntelMarkers().Select(m => m.Value).ToList() }
                 : new { count = gameSetup.GetBritishIntelMarkers().Count, values = new List<int>() };
 
             var gameState = new
             {
-                currentPlayer = gameSetup.Initiative,
+                Tips = "AI should remember and  always consider these points before declaring move.\n" +
+                "Conduct operations in the maximum numbers of spaces a turn choice allows.\n " +
+                "Full Operations allow up to 3 spaces for an operation type if conditions are met. If the Haganah track is at 4 then 4 spaces can be selected.  (2 for limited operation)\n" +
+                "Does the operations space selected get a bonus from using (removing) a weapons cache. Some operations allow the use of weapons cache from adjacent areas. Utilize weapons caches for operations in higher value areas.\n" +
+                "Always ensure the operational space selected meets the requirements to conduct that operation in that space (under location).\n",
+                turnNumber = gameSetup.TurnNumber,
                 initiative = gameSetup.Initiative,
                 politicalWill = gameSetup.PoliticalWill,
                 haganahTrack = gameSetup.HaganahTrack,
@@ -393,6 +531,8 @@ namespace TBW
                     name = a.Name,
                     type = a.Type,
                     pointValue = a.PointValue,
+                    adjacentAreas = a.AdjacentAreas,
+                    coastal = a.isCoastal,
                     irgunUnits = new
                     {
                         cells = a.Units.Count(u => u.Type == "Cell" && u.Faction == "Irgun"),
@@ -404,31 +544,57 @@ namespace TBW
                         police = a.Units.Count(u => u.Type == "Police" && u.Faction == "British"),
                         troops = a.Units.Count(u => u.Type == "Troop" && u.Faction == "British")
                     },
-                    markers = a.Markers.Select(m => new { type = m.Type, effect = m.Effect }).ToList() // Added markers info
+                    markers = a.Markers.Select(m => new { type = m.Type, effect = m.Effect }).ToList()
                 }).ToList(),
                 eventDeck = new
                 {
                     drawPileCount = gameSetup.GetDrawPile().Count,
                     discardPileCount = gameSetup.GetDiscardPile().Count
                 },
-                currentCard = new
-                {
-                    title = currentCard.Title,
-                    type = currentCard.Type
-                },
+                currentCard = currentCard != null
+                    ? new { title = currentCard.Title, type = currentCard.Type, option1 = currentCard.Option1, option2 = currentCard.Option2 }
+                    : new { title = "No Card", type = "None", option1 = "", option2 = "" },
                 availableOptions = GetAvailableOptions(),
                 intelMarkerInfo
             };
 
             var json = JsonConvert.SerializeObject(gameState, Formatting.Indented);
-            File.WriteAllText(filePath, json);
+            if (exportJson)
+            {
+                string directory = Path.GetDirectoryName(filePath);
+                string filename = Path.GetFileNameWithoutExtension(filePath);
+                string extension = Path.GetExtension(filePath);
+                string newFilePath = Path.Combine(directory, gameSetup.TurnNumber.ToString() + '_' + filename + extension);
+                File.WriteAllText(newFilePath, json);
+            }
+
+            return json; // Return the file path where the JSON was saved - not used
         }
 
 
 
+        private void LogInitialGameState()
+        {
+            string initialState = ExportGameStateToJson("game_state_initial.json");
+            LogGameAction("Initial Game State", initialState);
+           
+        }
 
+        public void LogGameAction(string actionDescription, string actionDetails)
+        {
+            if (!File.Exists("game_log.txt"))
+            {
+                // Create or overwrite the game log file
+                using (StreamWriter writer = new StreamWriter("game_log.txt", false))
+                {
+                    writer.WriteLine("Game Log reCreated: " + DateTime.Now);
+                }
+            }
 
-
+            string logEntry = $"Game Event: {actionDescription}\n{actionDetails}\n";
+            File.AppendAllText("game_log.txt", logEntry);
+            gameLogTextBox.AppendText(logEntry + Environment.NewLine);
+        }
 
 
         private string GetSelectedOptionText(Capability capability)
@@ -441,24 +607,10 @@ namespace TBW
             };
         }
 
-        private List<string> GetAvailableOptions()
+        private Array GetAvailableOptions()
         {
-            var availableOptions = new List<string>();
 
-            if (!gameSetup.FullOperationTaken)
-            {
-                availableOptions.Add("Full Operation and Special Activity");
-            }
-            if (!gameSetup.EventTaken)
-            {
-                availableOptions.Add("Take Event / Block Event");
-            }
-            if (!gameSetup.LimitedOperationTaken)
-            {
-                availableOptions.Add("Limited Operation");
-            }
-
-            return availableOptions;
+            return gameSetup.AvailableOptions("list");  
         }
 
 
@@ -475,7 +627,7 @@ namespace TBW
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                ExportGameStateToJson(saveFileDialog.FileName);
+                ExportGameStateToJson(saveFileDialog.FileName,true);
             }
         }
         private void OpenManageMarkersWindow_Click(object sender, RoutedEventArgs e)
@@ -485,9 +637,6 @@ namespace TBW
             manageMarkersWindow.ShowDialog();
             UpdateBoardState();
         }
-
-
-
 
     }
 }

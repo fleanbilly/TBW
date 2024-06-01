@@ -35,6 +35,7 @@ namespace TBW
                 area.AddMarker(selectedMarker);
                 UpdateMarkersListBox();
                 RefreshBoardState();
+                AddMarkerToLog(selectedMarker,selectedArea);
             }
         }
 
@@ -76,6 +77,13 @@ namespace TBW
             if (Application.Current.MainWindow is MainWindow mainWindow)
             {
                 mainWindow.RefreshBoardState();
+            }
+        }
+        private void AddMarkerToLog(string marker, string area)
+        {
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                mainWindow.LogGameAction("Marker Added",$"{gameSetup.CurrentTurnPlayer} added {marker} to {area}");
             }
         }
     }

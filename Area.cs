@@ -8,16 +8,18 @@ namespace TBW
         public string Name { get; set; }
         public string Type { get; set; } // "City", "District", "Railway", "Prison", "Available"
         public int PointValue { get; set; }
+        public bool isCoastal { get; set; }
         public List<string> AdjacentAreas { get; set; }
         public List<Unit> Units { get; set; }
         public List<Marker> Markers { get; set; } // Updated to use Marker class
 
-        public Area(string name, string type, int pointValue, List<string> adjacentAreas)
+        public Area(string name, string type, int pointValue,bool coast, List<string> adjacentAreas)
         {
             Name = name;
             Type = type;
             PointValue = pointValue;
             AdjacentAreas = adjacentAreas;
+            isCoastal = coast;
             Units = new List<Unit>();
             Markers = new List<Marker>(); // Initialize markers list
         }

@@ -1,0 +1,362 @@
+{
+  "Tips": "AI should remember and  always consider these points before declaring move.\nConduct operations in the maximum numbers of spaces a turn choice allows.\n Full Operations allow up to 3 spaces for an operation type if conditions are met. If the Haganah track is at 4 then 4 spaces can be selected.  (2 for limited operation)\nDoes the operations space selected get a bonus from using (removing) a weapons cache. Some operations allow the use of weapons cache from adjacent areas. Utilize weapons caches for operations in higher value areas.\nAlways ensure the operational space selected meets the requirements to conduct that operation in that space (under location).\n",
+  "turnNumber": 3,
+  "initiative": "British",
+  "politicalWill": 18,
+  "haganahTrack": 4,
+  "selectedCapabilities": {
+    "british": [],
+    "irgun": []
+  },
+  "areas": [
+    {
+      "name": "Haifa City",
+      "type": "City",
+      "pointValue": 2,
+      "adjacentAreas": [
+        "Haifa District",
+        "Railway Tel Aviv-Haifa"
+      ],
+      "coastal": true,
+      "irgunUnits": {
+        "cells": 3,
+        "hiddenCells": 3,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 2,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Tel Aviv City",
+      "type": "City",
+      "pointValue": 2,
+      "adjacentAreas": [
+        "Lydda",
+        "Railway Tel Aviv-Haifa",
+        "Railway Tel Aviv-Jerusalem",
+        "Railway Tel Aviv-Egypt"
+      ],
+      "coastal": true,
+      "irgunUnits": {
+        "cells": 5,
+        "hiddenCells": 5,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 2,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Jerusalem City",
+      "type": "City",
+      "pointValue": 2,
+      "adjacentAreas": [
+        "Lydda",
+        "Railway Tel Aviv-Jerusalem"
+      ],
+      "coastal": false,
+      "irgunUnits": {
+        "cells": 2,
+        "hiddenCells": 2,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 1,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Galilee",
+      "type": "District",
+      "pointValue": 1,
+      "adjacentAreas": [
+        "Haifa District",
+        "Samaria",
+        "Railway Haifa-Syria"
+      ],
+      "coastal": true,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Haifa District",
+      "type": "District",
+      "pointValue": 1,
+      "adjacentAreas": [
+        "Galilee",
+        "Haifa City",
+        "Samaria",
+        "Railway Tel Aviv-Haifa"
+      ],
+      "coastal": true,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Samaria",
+      "type": "District",
+      "pointValue": 1,
+      "adjacentAreas": [
+        "Galilee",
+        "Haifa District",
+        "Lydda",
+        "Railway Haifa-Jerusalem",
+        "Jerusalem District"
+      ],
+      "coastal": true,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Lydda",
+      "type": "District",
+      "pointValue": 1,
+      "adjacentAreas": [
+        "Samaria",
+        "Tel Aviv City",
+        "Jerusalem",
+        "Railway Tel Aviv-Jerusalem",
+        "Railway Tel Aviv-Egypt"
+      ],
+      "coastal": true,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Jerusalem District",
+      "type": "District",
+      "pointValue": 1,
+      "adjacentAreas": [
+        "Lydda",
+        "Gaza",
+        "Railway Tel Aviv-Jerusalem"
+      ],
+      "coastal": false,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Gaza",
+      "type": "District",
+      "pointValue": 1,
+      "adjacentAreas": [
+        "Jerusalem District",
+        "Lydda",
+        "Railway Tel Aviv-Egypt"
+      ],
+      "coastal": true,
+      "irgunUnits": {
+        "cells": 1,
+        "hiddenCells": 1,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 2
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Haifa-Syria",
+      "type": "Railway",
+      "pointValue": 0,
+      "adjacentAreas": [
+        "Galilee",
+        "Haifa District",
+        "Haifa City"
+      ],
+      "coastal": false,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Tel Aviv-Haifa",
+      "type": "Railway",
+      "pointValue": 0,
+      "adjacentAreas": [
+        "Haifa City",
+        "Haifa District",
+        "Lydda",
+        "Tel Aviv City"
+      ],
+      "coastal": false,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Tel Aviv-Jerusalem",
+      "type": "Railway",
+      "pointValue": 0,
+      "adjacentAreas": [
+        "Lydda",
+        "Jerusalem District",
+        "Jerusalem City",
+        "Tel Aviv City"
+      ],
+      "coastal": false,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Railway Tel Aviv-Egypt",
+      "type": "Railway",
+      "pointValue": 0,
+      "adjacentAreas": [
+        "Gaza",
+        "Lydda",
+        "Tel Aviv City"
+      ],
+      "coastal": false,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Prison",
+      "type": "Prison",
+      "pointValue": 0,
+      "adjacentAreas": [],
+      "coastal": false,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Available British",
+      "type": "Available",
+      "pointValue": 0,
+      "adjacentAreas": [],
+      "coastal": false,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 1,
+        "troops": 0
+      },
+      "markers": []
+    },
+    {
+      "name": "Available Irgun",
+      "type": "Available",
+      "pointValue": 0,
+      "adjacentAreas": [],
+      "coastal": false,
+      "irgunUnits": {
+        "cells": 0,
+        "hiddenCells": 0,
+        "weapons": 0
+      },
+      "britishUnits": {
+        "police": 0,
+        "troops": 0
+      },
+      "markers": []
+    }
+  ],
+  "eventDeck": {
+    "drawPileCount": 18,
+    "discardPileCount": 3
+  },
+  "currentCard": {
+    "title": "P8 - Harry Truman*",
+    "type": "Event",
+    "option1": "Option 1: Offers support: Increase Political Will by 2. British may Deploy in up to 3 spaces.",
+    "option2": "Option 2: Pressures British: Lower Political Will by 1 for each Curfew on the map."
+  },
+  "availableOptions": [
+    "Full Operation and Special Activity",
+    "Take Event / Block Event",
+    "Limited Operation"
+  ],
+  "intelMarkerInfo": {
+    "count": 0,
+    "values": []
+  }
+}
